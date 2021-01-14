@@ -14,9 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final DatabaseUserDetailsService databaseUserDetailsService;
+    private final DatabaseUserDetailPasswordService databaseUserDetailPasswordService;
 
-    public SecurityConfig(DatabaseUserDetailsService databaseUserDetailsService) {
+    public SecurityConfig(DatabaseUserDetailsService databaseUserDetailsService, DatabaseUserDetailPasswordService databaseUserDetailPasswordService) {
         this.databaseUserDetailsService = databaseUserDetailsService;
+        this.databaseUserDetailPasswordService = databaseUserDetailPasswordService;
     }
 
     @Override
@@ -33,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(this.databaseUserDetailsService);
+        daoAuthenticationProvider.setUserDetailsPasswordService(this.databaseUserDetailPasswordService);
         return daoAuthenticationProvider;
     }
 
